@@ -2,10 +2,31 @@
 name = "ludos"
 version = "0.1.0"
 description = "Pygame abstraction framework for rapid game development"
+readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
+authors = [
+    { name = "Matt Clarke-Lauer", email = "mdlauer@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Games/Entertainment",
+    "Topic :: Software Development :: Libraries :: pygame",
+]
 dependencies = [
     "pygame-ce>=2.5.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/mclarkelauer/ludos"
+Repository = "https://github.com/mclarkelauer/ludos"
+Issues = "https://github.com/mclarkelauer/ludos/issues"
 
 [project.optional-dependencies]
 dev = [
