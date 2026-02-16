@@ -1,6 +1,6 @@
-# Gamify User Guide
+# Ludos User Guide
 
-Gamify is a pygame-ce abstraction framework that eliminates boilerplate and lets you build games fast. You define your state, scenes, and input bindings — Gamify handles the game loop, event conversion, and display management.
+Ludos is a pygame-ce abstraction framework that eliminates boilerplate and lets you build games fast. You define your state, scenes, and input bindings — Ludos handles the game loop, event conversion, and display management.
 
 ## Installation
 
@@ -13,10 +13,10 @@ uv sync --all-extras
 
 ## Quickstart
 
-Here is the smallest possible Gamify program — a window with a menu:
+Here is the smallest possible Ludos program — a window with a menu:
 
 ```python
-from gamify import GameEngine, EngineConfig, MenuScene, MenuItem, MenuConfig
+from ludos import GameEngine, EngineConfig, MenuScene, MenuItem, MenuConfig
 
 
 def on_start():
@@ -44,7 +44,7 @@ This opens an 800x600 window with a navigable menu. Arrow keys move the selectio
 
 ## Core Concepts
 
-Gamify's architecture separates concerns into four systems:
+Ludos's architecture separates concerns into four systems:
 
 ```
 GameEngine (composition root)
@@ -66,7 +66,7 @@ Extend `BaseGameState` with a `@dataclass`. Your fields sit alongside the built-
 
 ```python
 from dataclasses import dataclass
-from gamify import BaseGameState
+from ludos import BaseGameState
 
 
 @dataclass
@@ -125,7 +125,7 @@ Raw pygame events are converted to `InputEvent` — a frozen dataclass:
 ### InputType
 
 ```python
-from gamify import InputType
+from ludos import InputType
 
 InputType.KEY_DOWN      # Key pressed
 InputType.KEY_UP        # Key released
@@ -140,7 +140,7 @@ InputType.QUIT          # Window close
 Maps raw pygame keys/buttons to semantic action strings. The engine uses these to populate `InputEvent.action`.
 
 ```python
-from gamify import KeyBindings
+from ludos import KeyBindings
 import pygame
 
 # Start from defaults or empty
@@ -178,7 +178,7 @@ bindings.get_mouse_action(1)            # "click"
 Polls pygame events, converts them to `InputEvent`, and dispatches registered callbacks.
 
 ```python
-from gamify import InputHandler, KeyBindings
+from ludos import InputHandler, KeyBindings
 
 handler = InputHandler(KeyBindings.defaults())
 
@@ -200,7 +200,7 @@ All game screens extend `BaseScene` and implement three required methods:
 
 ```python
 import pygame
-from gamify import BaseScene, BaseGameState, InputEvent, InputType
+from ludos import BaseScene, BaseGameState, InputEvent, InputType
 
 
 class GameplayScene(BaseScene):
@@ -232,7 +232,7 @@ class GameplayScene(BaseScene):
 Scenes live on a stack. The topmost scene is the **active** scene that receives input, updates, and renders.
 
 ```python
-from gamify import SceneManager, BaseGameState
+from ludos import SceneManager, BaseGameState
 
 manager = SceneManager()
 state = BaseGameState()
@@ -258,7 +258,7 @@ manager.clear(state)  # Pop all scenes, calling on_exit for each
 A ready-made scene with keyboard-navigable menu items:
 
 ```python
-from gamify import MenuScene, MenuItem, MenuConfig
+from ludos import MenuScene, MenuItem, MenuConfig
 
 
 def start_game():
@@ -304,12 +304,12 @@ Navigation uses the `"move_up"`, `"move_down"`, and `"confirm"` actions from you
 ### EngineConfig
 
 ```python
-from gamify import EngineConfig
+from ludos import EngineConfig
 
 config = EngineConfig(
     width=800,              # Window width (default: 800)
     height=600,             # Window height (default: 600)
-    title="Gamify",         # Window title (default: "Gamify")
+    title="Ludos",         # Window title (default: "Ludos")
     fps=60,                 # Target frames per second (default: 60)
     bg_color=(0, 0, 0),     # Background clear color (default: black)
     display_flags=0,        # Pygame display flags (default: 0)
@@ -321,7 +321,7 @@ config = EngineConfig(
 The composition root that ties everything together:
 
 ```python
-from gamify import GameEngine, EngineConfig, KeyBindings
+from ludos import GameEngine, EngineConfig, KeyBindings
 
 engine = GameEngine(
     config=EngineConfig(title="My Game"),
@@ -354,20 +354,20 @@ engine.stop()   # Sets is_running = False, loop exits after current frame
 
 ## Error Handling
 
-All framework errors inherit from `GamifyError`:
+All framework errors inherit from `LudosError`:
 
 ```python
-from gamify import GamifyError
+from ludos import LudosError
 
 try:
     engine.run()
-except GamifyError as e:
+except LudosError as e:
     print(f"Framework error: {e}")
 ```
 
 | Error | Raised when |
 |-------|-------------|
-| `GamifyError` | Base class for all errors |
+| `LudosError` | Base class for all errors |
 | `InitializationError` | Pygame init or window creation fails |
 | `StateError` | State mutator raises or invalid state passed |
 | `SceneError` | Invalid scene operation (pop empty stack, push non-scene) |
@@ -383,7 +383,7 @@ from dataclasses import dataclass
 
 import pygame
 
-from gamify import (
+from ludos import (
     BaseGameState,
     BaseScene,
     EngineConfig,
@@ -463,12 +463,12 @@ if __name__ == "__main__":
 
 ## Testing Your Game
 
-Gamify is designed for testability. Mock pygame to test scenes without a display:
+Ludos is designed for testability. Mock pygame to test scenes without a display:
 
 ```python
 from unittest.mock import MagicMock
 
-from gamify import InputEvent, InputType
+from ludos import InputEvent, InputType
 from your_game import GameplayScene, MyState
 
 
@@ -487,5 +487,5 @@ Run tests with:
 
 ```bash
 uv run pytest
-uv run pytest --cov=gamify
+uv run pytest --cov=ludos
 ```

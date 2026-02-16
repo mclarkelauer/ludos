@@ -2,7 +2,7 @@
 
 import pygame
 
-from gamify.errors import InitializationError, RenderError
+from ludos.errors import InitializationError, RenderError
 
 
 class Window:
@@ -18,7 +18,7 @@ class Window:
         self,
         width: int = 800,
         height: int = 600,
-        title: str = "Gamify",
+        title: str = "Ludos",
         flags: int = 0,
     ) -> None:
         self._width = width

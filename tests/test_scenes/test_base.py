@@ -2,9 +2,9 @@
 
 import pytest
 
-from gamify.input.events import InputEvent, InputType
-from gamify.scenes.base import BaseScene
-from gamify.state.base import BaseGameState
+from ludos.input.events import InputEvent, InputType
+from ludos.scenes.base import BaseScene
+from ludos.state.base import BaseGameState
 
 
 class ConcreteScene(BaseScene):

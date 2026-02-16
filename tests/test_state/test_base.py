@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from gamify.state.base import BaseGameState
+from ludos.state.base import BaseGameState
 
 
 class TestBaseGameState:

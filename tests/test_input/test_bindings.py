@@ -3,8 +3,8 @@
 import pygame
 import pytest
 
-from gamify.errors import InputError
-from gamify.input.bindings import KeyBindings
+from ludos.errors import InputError
+from ludos.input.bindings import KeyBindings
 
 
 class TestKeyBindings:

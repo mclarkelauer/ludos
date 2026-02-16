@@ -4,8 +4,8 @@ from collections.abc import Callable
 
 import pygame
 
-from gamify.input.bindings import KeyBindings
-from gamify.input.events import InputEvent, InputType
+from ludos.input.bindings import KeyBindings
+from ludos.input.events import InputEvent, InputType
 
 
 class InputHandler:

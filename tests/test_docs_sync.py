@@ -12,8 +12,8 @@ from pathlib import Path
 
 import pytest
 
-import gamify
-from gamify import (
+import ludos
+from ludos import (
     BaseGameState,
     BaseScene,
     EngineConfig,
@@ -24,15 +24,15 @@ from gamify import (
     MenuItem,
     StateManager,
 )
-from gamify.errors import (
-    GamifyError,
+from ludos.errors import (
+    LudosError,
     InitializationError,
     InputError,
     RenderError,
     SceneError,
     StateError,
 )
-from gamify.scenes.manager import SceneManager
+from ludos.scenes.manager import SceneManager
 
 DOCS_DIR = Path(__file__).parent.parent / "docs"
 GUIDE = DOCS_DIR / "guide.md"
@@ -49,7 +49,7 @@ def guide_text():
 class TestPublicAPIDocumented:
     def test_all_exports_mentioned_in_guide(self, guide_text):
         missing = []
-        for name in gamify.__all__:
+        for name in ludos.__all__:
             if name not in guide_text:
                 missing.append(name)
         assert missing == [], f"Undocumented public exports: {missing}"
@@ -151,17 +151,17 @@ class TestClassSignatures:
 class TestErrorDocsSync:
     def test_all_error_classes_documented(self, guide_text):
         error_classes = [
-            "GamifyError", "InitializationError", "StateError",
+            "LudosError", "InitializationError", "StateError",
             "SceneError", "InputError", "RenderError",
         ]
         for name in error_classes:
             assert name in guide_text, f"{name} not documented in guide"
 
     def test_error_hierarchy_accurate(self):
-        """All custom errors must inherit from GamifyError."""
+        """All custom errors must inherit from LudosError."""
         for cls in (InitializationError, StateError, SceneError,
                      InputError, RenderError):
-            assert issubclass(cls, GamifyError)
+            assert issubclass(cls, LudosError)
 
 
 # ---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 """Tests for input events."""
 
-from gamify.input.events import InputEvent, InputType
+from ludos.input.events import InputEvent, InputType
 
 
 class TestInputType:

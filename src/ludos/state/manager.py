@@ -3,8 +3,8 @@
 from collections.abc import Callable
 from typing import Generic, TypeVar
 
-from gamify.errors import StateError
-from gamify.state.base import BaseGameState
+from ludos.errors import StateError
+from ludos.state.base import BaseGameState
 
 T = TypeVar("T", bound=BaseGameState)
 

@@ -5,12 +5,12 @@ from unittest.mock import MagicMock, patch
 import pygame
 import pytest
 
-from gamify.display.window import Window
-from gamify.errors import InitializationError, RenderError
+from ludos.display.window import Window
+from ludos.errors import InitializationError, RenderError
 
 
 class TestWindow:
-    @patch("gamify.display.window.pygame.display")
+    @patch("ludos.display.window.pygame.display")
     def test_creates_display(self, mock_display):
         mock_surface = MagicMock()
         mock_display.set_mode.return_value = mock_surface
@@ -23,15 +23,15 @@ class TestWindow:
         assert window.height == 768
         assert window.title == "Test Game"
 
-    @patch("gamify.display.window.pygame.display")
+    @patch("ludos.display.window.pygame.display")
     def test_default_values(self, mock_display):
         mock_display.set_mode.return_value = MagicMock()
         window = Window()
         assert window.width == 800
         assert window.height == 600
-        assert window.title == "Gamify"
+        assert window.title == "Ludos"
 
-    @patch("gamify.display.window.pygame.display")
+    @patch("ludos.display.window.pygame.display")
     def test_clear_fills_surface(self, mock_display):
         mock_surface = MagicMock()
         mock_display.set_mode.return_value = mock_surface
@@ -39,7 +39,7 @@ class TestWindow:
         window.clear((255, 0, 0))
         mock_surface.fill.assert_called_once_with((255, 0, 0))
 
-    @patch("gamify.display.window.pygame.display")
+    @patch("ludos.display.window.pygame.display")
     def test_clear_default_black(self, mock_display):
         mock_surface = MagicMock()
         mock_display.set_mode.return_value = mock_surface
@@ -47,20 +47,20 @@ class TestWindow:
         window.clear()
         mock_surface.fill.assert_called_once_with((0, 0, 0))
 
-    @patch("gamify.display.window.pygame.display")
+    @patch("ludos.display.window.pygame.display")
     def test_flip_calls_display_flip(self, mock_display):
         mock_display.set_mode.return_value = MagicMock()
         window = Window()
         window.flip()
         mock_display.flip.assert_called_once()
 
-    @patch("gamify.display.window.pygame.display")
+    @patch("ludos.display.window.pygame.display")
     def test_init_error_wraps(self, mock_display):
         mock_display.set_mode.side_effect = pygame.error("no display")
         with pytest.raises(InitializationError, match="Failed to create window"):
             Window()
 
-    @patch("gamify.display.window.pygame.display")
+    @patch("ludos.display.window.pygame.display")
     def test_flip_error_wraps(self, mock_display):
         mock_display.set_mode.return_value = MagicMock()
         window = Window()

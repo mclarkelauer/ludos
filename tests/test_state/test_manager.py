@@ -4,9 +4,9 @@ from dataclasses import dataclass
 
 import pytest
 
-from gamify.errors import StateError
-from gamify.state.base import BaseGameState
-from gamify.state.manager import StateManager
+from ludos.errors import StateError
+from ludos.state.base import BaseGameState
+from ludos.state.manager import StateManager
 
 
 @dataclass

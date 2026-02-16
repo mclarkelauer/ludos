@@ -2,9 +2,9 @@
 
 from unittest.mock import MagicMock, patch
 
-from gamify.input.events import InputEvent, InputType
-from gamify.scenes.menu import MenuConfig, MenuItem, MenuScene
-from gamify.state.base import BaseGameState
+from ludos.input.events import InputEvent, InputType
+from ludos.scenes.menu import MenuConfig, MenuItem, MenuScene
+from ludos.state.base import BaseGameState
 
 
 def _action_event(action: str) -> InputEvent:
@@ -73,7 +73,7 @@ class TestMenuScene:
     def test_items_property(self):
         assert self.menu.items is self.items
 
-    @patch("gamify.scenes.menu.pygame.font.Font")
+    @patch("ludos.scenes.menu.pygame.font.Font")
     def test_render_calls_fill(self, mock_font_cls):
         mock_font = MagicMock()
         mock_font.render.return_value = MagicMock()
@@ -87,7 +87,7 @@ class TestMenuScene:
         self.menu.render(surface, self.state)
         surface.fill.assert_called_once_with((0, 0, 0))
 
-    @patch("gamify.scenes.menu.pygame.font.Font")
+    @patch("ludos.scenes.menu.pygame.font.Font")
     def test_render_with_title(self, mock_font_cls):
         mock_font = MagicMock()
         mock_font.render.return_value = MagicMock()

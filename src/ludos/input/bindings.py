@@ -2,7 +2,7 @@
 
 import pygame
 
-from gamify.errors import InputError
+from ludos.errors import InputError
 
 
 class KeyBindings:

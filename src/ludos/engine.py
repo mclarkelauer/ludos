@@ -4,15 +4,15 @@ from dataclasses import dataclass
 
 import pygame
 
-from gamify.display.window import Window
-from gamify.errors import InitializationError, SceneError
-from gamify.input.bindings import KeyBindings
-from gamify.input.events import InputType
-from gamify.input.handler import InputHandler
-from gamify.scenes.base import BaseScene
-from gamify.scenes.manager import SceneManager
-from gamify.state.base import BaseGameState
-from gamify.state.manager import StateManager
+from ludos.display.window import Window
+from ludos.errors import InitializationError, SceneError
+from ludos.input.bindings import KeyBindings
+from ludos.input.events import InputType
+from ludos.input.handler import InputHandler
+from ludos.scenes.base import BaseScene
+from ludos.scenes.manager import SceneManager
+from ludos.state.base import BaseGameState
+from ludos.state.manager import StateManager
 
 
 @dataclass
@@ -21,7 +21,7 @@ class EngineConfig:
 
     width: int = 800
     height: int = 600
-    title: str = "Gamify"
+    title: str = "Ludos"
     fps: int = 60
     bg_color: tuple[int, int, int] = (0, 0, 0)
     display_flags: int = 0

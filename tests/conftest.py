@@ -1,4 +1,4 @@
-"""Shared test fixtures for gamify tests."""
+"""Shared test fixtures for ludos tests."""
 
 from unittest.mock import MagicMock
 

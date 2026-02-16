@@ -5,12 +5,12 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from gamify.engine import EngineConfig, GameEngine
-from gamify.errors import InitializationError
-from gamify.input.events import InputEvent, InputType
-from gamify.scenes.base import BaseScene
-from gamify.scenes.menu import MenuConfig, MenuItem, MenuScene
-from gamify.state.base import BaseGameState
+from ludos.engine import EngineConfig, GameEngine
+from ludos.errors import InitializationError
+from ludos.input.events import InputEvent, InputType
+from ludos.scenes.base import BaseScene
+from ludos.scenes.menu import MenuConfig, MenuItem, MenuScene
+from ludos.state.base import BaseGameState
 
 
 class StubScene(BaseScene):
@@ -34,7 +34,7 @@ class TestEngineConfig:
         cfg = EngineConfig()
         assert cfg.width == 800
         assert cfg.height == 600
-        assert cfg.title == "Gamify"
+        assert cfg.title == "Ludos"
         assert cfg.fps == 60
         assert cfg.bg_color == (0, 0, 0)
 
@@ -67,7 +67,7 @@ class TestGameEngine:
         engine.stop()
         assert engine.state_manager.state.is_running is False
 
-    @patch("gamify.engine.pygame")
+    @patch("ludos.engine.pygame")
     def test_run_initializes_and_shuts_down(self, mock_pg):
         mock_pg.display.set_mode.return_value = MagicMock()
         mock_clock = MagicMock()
@@ -92,7 +92,7 @@ class TestGameEngine:
         mock_pg.init.assert_called_once()
         mock_pg.quit.assert_called_once()
 
-    @patch("gamify.engine.pygame")
+    @patch("ludos.engine.pygame")
     def test_quit_event_stops_engine(self, mock_pg):
         mock_pg.display.set_mode.return_value = MagicMock()
         mock_clock = MagicMock()
@@ -116,7 +116,7 @@ class TestGameEngine:
 
         assert engine.state_manager.state.is_running is False
 
-    @patch("gamify.engine.pygame")
+    @patch("ludos.engine.pygame")
     def test_scene_receives_events(self, mock_pg):
         mock_pg.display.set_mode.return_value = MagicMock()
         mock_clock = MagicMock()
@@ -143,9 +143,9 @@ class TestGameEngine:
         assert scene.update_count >= 1
         assert scene.render_count >= 1
 
-    @patch("gamify.scenes.menu.pygame")
-    @patch("gamify.display.window.pygame")
-    @patch("gamify.engine.pygame")
+    @patch("ludos.scenes.menu.pygame")
+    @patch("ludos.display.window.pygame")
+    @patch("ludos.engine.pygame")
     def test_integration_menu_scene(self, mock_pg, mock_window_pg, mock_menu_pg):
         """Integration test: engine runs with a MenuScene."""
         mock_surface = MagicMock()

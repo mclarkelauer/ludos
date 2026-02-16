@@ -2,10 +2,10 @@
 
 import pytest
 
-from gamify.errors import SceneError
-from gamify.scenes.base import BaseScene
-from gamify.scenes.manager import SceneManager
-from gamify.state.base import BaseGameState
+from ludos.errors import SceneError
+from ludos.scenes.base import BaseScene
+from ludos.scenes.manager import SceneManager
+from ludos.state.base import BaseGameState
 
 
 class FakeScene(BaseScene):

@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 
 import pygame
 
-from gamify.input.events import InputEvent
-from gamify.state.base import BaseGameState
+from ludos.input.events import InputEvent
+from ludos.state.base import BaseGameState
 
 
 class BaseScene(ABC):

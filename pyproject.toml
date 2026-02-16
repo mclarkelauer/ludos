@@ -1,5 +1,5 @@
 [project]
-name = "gamify"
+name = "ludos"
 version = "0.1.0"
 description = "Pygame abstraction framework for rapid game development"
 requires-python = ">=3.12"
@@ -18,7 +18,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/gamify"]
+packages = ["src/ludos"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

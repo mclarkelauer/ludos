@@ -1,8 +1,8 @@
 """Stack-based scene manager."""
 
-from gamify.errors import SceneError
-from gamify.scenes.base import BaseScene
-from gamify.state.base import BaseGameState
+from ludos.errors import SceneError
+from ludos.scenes.base import BaseScene
+from ludos.state.base import BaseGameState
 
 
 class SceneManager:
