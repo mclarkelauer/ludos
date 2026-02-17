@@ -1,6 +1,6 @@
 [project]
 name = "ludos"
-version = "0.1.0"
+version = "0.2.0"
 description = "Pygame abstraction framework for rapid game development"
 readme = "README.md"
 license = "MIT"
