@@ -8,7 +8,7 @@ import pygame
 from ludos.display.window import Window
 from ludos.errors import InitializationError, SceneError
 from ludos.input.bindings import KeyBindings
-from ludos.input.events import InputType
+from ludos.input.events import InputEvent, InputType
 from ludos.input.handler import InputHandler
 from ludos.scenes.base import BaseScene
 from ludos.scenes.manager import SceneManager
