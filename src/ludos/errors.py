@@ -23,3 +23,7 @@ class InputError(LudosError):
 
 class RenderError(LudosError):
     """Raised when rendering operations fail."""
+
+
+class PersistenceError(LudosError):
+    """Raised when save/load operations fail."""

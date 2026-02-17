@@ -6,6 +6,7 @@ from ludos.errors import (
     LudosError,
     InitializationError,
     InputError,
+    PersistenceError,
     RenderError,
     SceneError,
     StateError,
@@ -17,6 +18,7 @@ from ludos.scenes.base import BaseScene
 from ludos.scenes.manager import SceneManager
 from ludos.scenes.menu import MenuConfig, MenuItem, MenuScene
 from ludos.state.base import BaseGameState
+from ludos.persistence import save_state, load_state
 from ludos.state.manager import StateManager
 
 __all__ = [
@@ -34,10 +36,13 @@ __all__ = [
     "MenuConfig",
     "MenuItem",
     "MenuScene",
+    "PersistenceError",
     "RenderError",
     "SceneError",
     "SceneManager",
     "StateError",
     "StateManager",
     "Window",
+    "load_state",
+    "save_state",
 ]

@@ -28,6 +28,7 @@ from ludos.errors import (
     LudosError,
     InitializationError,
     InputError,
+    PersistenceError,
     RenderError,
     SceneError,
     StateError,
@@ -152,7 +153,7 @@ class TestErrorDocsSync:
     def test_all_error_classes_documented(self, guide_text):
         error_classes = [
             "LudosError", "InitializationError", "StateError",
-            "SceneError", "InputError", "RenderError",
+            "SceneError", "InputError", "RenderError", "PersistenceError",
         ]
         for name in error_classes:
             assert name in guide_text, f"{name} not documented in guide"
@@ -160,7 +161,7 @@ class TestErrorDocsSync:
     def test_error_hierarchy_accurate(self):
         """All custom errors must inherit from LudosError."""
         for cls in (InitializationError, StateError, SceneError,
-                     InputError, RenderError):
+                     InputError, RenderError, PersistenceError):
             assert issubclass(cls, LudosError)
 
 
@@ -264,3 +265,14 @@ class TestEngineConfigDefaults:
             assert doc_str in guide_text, (
                 f"EngineConfig.{field_name} default {actual!r} not documented"
             )
+
+
+# ---------------------------------------------------------------------------
+# 8. Persistence functions documented
+# ---------------------------------------------------------------------------
+class TestPersistenceDocsSync:
+    def test_save_state_documented(self, guide_text):
+        assert "save_state" in guide_text, "save_state not documented in guide"
+
+    def test_load_state_documented(self, guide_text):
+        assert "load_state" in guide_text, "load_state not documented in guide"

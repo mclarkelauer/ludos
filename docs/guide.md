@@ -108,6 +108,79 @@ The `StateManager` tracks whether state has changed via a `dirty` flag, which th
 
 If the mutator raises, it is wrapped in a `StateError`.
 
+## Save & Load
+
+Ludos includes JSON-based persistence for saving and loading game state. The system handles nested dataclasses, enums, sets, tuples, and dicts with enum keys.
+
+### Saving State
+
+```python
+from ludos import save_state
+
+save_state(state, "saves/slot1.json")
+```
+
+`save_state` serializes the state to JSON. Engine-managed fields (`is_running`, `frame_count`, `elapsed_time`) are excluded — they are transient and restored to defaults on load. Parent directories are created automatically.
+
+### Loading State
+
+```python
+from ludos import load_state
+
+state = load_state(MyState, "saves/slot1.json")
+```
+
+`load_state` reads the JSON file and reconstructs the state. It uses type hints to correctly deserialize enums, sets, nested dataclasses, and other complex types. Engine-managed fields are reset to their defaults.
+
+### Supported Types
+
+The serializer handles these types in your state fields:
+
+| Type | Serialized as |
+|------|---------------|
+| `int`, `float`, `str`, `bool`, `None` | JSON primitives |
+| `enum.Enum` | `{"__enum__": "ClassName.MEMBER"}` |
+| `set`, `frozenset` | `{"__set__": [sorted elements]}` |
+| `tuple` | `{"__tuple__": [elements]}` |
+| `@dataclass` | `{"__type__": "ClassName", ...fields}` |
+| `dict` with enum keys | Enum member names as string keys |
+| `list[T]` | JSON array with recursive serialization |
+| `Optional[T]` / `T \| None` | Value or `null` |
+
+### Save & Load Example
+
+```python
+from dataclasses import dataclass, field
+from enum import Enum
+
+from ludos import BaseGameState, save_state, load_state
+
+
+class Difficulty(Enum):
+    EASY = 1
+    HARD = 2
+
+
+@dataclass
+class MyState(BaseGameState):
+    score: int = 0
+    difficulty: Difficulty = Difficulty.EASY
+    visited: set[str] = field(default_factory=set)
+
+
+state = MyState(score=100, difficulty=Difficulty.HARD, visited={"cave", "town"})
+save_state(state, "save.json")
+
+loaded = load_state(MyState, "save.json")
+assert loaded.score == 100
+assert loaded.difficulty is Difficulty.HARD
+assert loaded.visited == {"cave", "town"}
+```
+
+### Save & Load Errors
+
+All save/load failures raise `PersistenceError` — missing files, invalid JSON, version mismatches, and deserialization errors.
+
 ## Input
 
 ### InputEvent
@@ -383,6 +456,7 @@ except LudosError as e:
 | `StateError` | State mutator raises or invalid state passed |
 | `SceneError` | Invalid scene operation (pop empty stack, push non-scene) |
 | `InputError` | Invalid key binding (empty action string) |
+| `PersistenceError` | Save file missing, invalid JSON, or deserialization fails |
 | `RenderError` | Display flip fails |
 
 ## Complete Example
