@@ -1,5 +1,7 @@
 """Window wrapper around pygame display."""
 
+import warnings
+
 import pygame
 
 from ludos.errors import InitializationError, RenderError
@@ -27,8 +29,26 @@ class Window:
         try:
             self._surface = pygame.display.set_mode((width, height), flags)
             pygame.display.set_caption(title)
+            self._focus_window()
         except pygame.error as e:
             raise InitializationError(f"Failed to create window: {e}") from e
+
+    @staticmethod
+    def _focus_window() -> None:
+        """Raise the window and grab input focus."""
+        try:
+            from pygame._sdl2.video import Window as SDLWindow
+
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message=".*surface-rendering.*",
+                    category=DeprecationWarning,
+                )
+                sdl_window = SDLWindow.from_display_module()
+            sdl_window.focus()
+        except Exception:
+            pass  # Best-effort; not all platforms support this
 
     @property
     def surface(self) -> pygame.Surface:

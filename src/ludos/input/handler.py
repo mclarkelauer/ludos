@@ -71,9 +71,9 @@ class InputHandler:
         pos = getattr(pg_event, "pos", None)
 
         action = None
-        if key is not None:
+        if key is not None and input_type == InputType.KEY_DOWN:
             action = self._bindings.get_key_action(key)
-        elif button is not None and input_type in (InputType.MOUSE_DOWN, InputType.MOUSE_UP):
+        elif button is not None and input_type == InputType.MOUSE_DOWN:
             action = self._bindings.get_mouse_action(button)
 
         return InputEvent(type=input_type, key=key, button=button, pos=pos, action=action)

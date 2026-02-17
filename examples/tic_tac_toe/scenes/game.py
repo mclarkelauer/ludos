@@ -28,6 +28,7 @@ AI_DELAY = 0.4
 
 class GameScene(BaseScene):
     """Handles gameplay and game-over display."""
+    input_repeat_delay = 1.0
 
     def __init__(self, engine, mode: GameMode) -> None:
         self._engine = engine
