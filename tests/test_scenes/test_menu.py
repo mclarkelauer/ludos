@@ -106,6 +106,9 @@ class TestMenuScene:
     def test_update_is_noop(self):
         self.menu.update(0.016, self.state)  # no error
 
+    def test_input_repeat_delay_default(self):
+        assert self.menu.input_repeat_delay == 0.15
+
     def test_empty_menu_confirm_no_crash(self):
         menu = MenuScene([])
         menu.handle_input(_action_event("confirm"), self.state)  # no crash

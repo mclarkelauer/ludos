@@ -45,6 +45,8 @@ class MenuScene(BaseScene):
         )
     """
 
+    input_repeat_delay = 0.15
+
     def __init__(
         self,
         items: list[MenuItem],

@@ -45,6 +45,17 @@ class TestBaseScene:
         scene.handle_input(event, state)
         assert len(scene.inputs) == 1
 
+    def test_input_repeat_delay_default(self):
+        scene = ConcreteScene()
+        assert scene.input_repeat_delay == 0.0
+
+    def test_input_repeat_delay_override(self):
+        class SlowScene(ConcreteScene):
+            input_repeat_delay = 0.2
+
+        scene = SlowScene()
+        assert scene.input_repeat_delay == 0.2
+
     def test_lifecycle_hooks_optional(self):
         # on_enter and on_exit have default no-op implementations
         class MinimalScene(BaseScene):

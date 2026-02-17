@@ -15,6 +15,13 @@ class BaseScene(ABC):
     Optionally override on_enter and on_exit for lifecycle hooks.
     """
 
+    input_repeat_delay: float = 0.0
+    """Minimum seconds between repeated deliveries of the same action.
+
+    Set to 0.0 (default) for no throttling. Subclasses can override
+    to slow down repeated key-down events (e.g. menu navigation).
+    """
+
     @abstractmethod
     def handle_input(self, event: InputEvent, state: BaseGameState) -> None:
         """Process a single input event."""

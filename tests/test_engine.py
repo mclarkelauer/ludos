@@ -1,5 +1,6 @@
 """Tests for GameEngine."""
 
+import time
 from dataclasses import dataclass
 from unittest.mock import MagicMock, patch
 
@@ -193,3 +194,106 @@ class TestGameEngine:
             engine.run()
 
         assert engine.state_manager.state.frame_count >= 1
+
+
+class ThrottledScene(BaseScene):
+    """Scene with input repeat delay for throttle testing."""
+
+    input_repeat_delay = 0.1
+
+    def __init__(self):
+        self.received_events: list[InputEvent] = []
+
+    def handle_input(self, event, state):
+        self.received_events.append(event)
+
+    def update(self, dt, state):
+        pass
+
+    def render(self, surface, state):
+        pass
+
+
+class TestInputRepeatThrottle:
+    def test_no_throttle_when_delay_zero(self):
+        """Events delivered normally when input_repeat_delay == 0."""
+        scene = StubScene()
+        assert scene.input_repeat_delay == 0.0
+
+        engine = GameEngine()
+        event = InputEvent(type=InputType.KEY_DOWN, key=42, action="move_up")
+        assert engine._should_deliver(event, scene) is True
+        assert engine._should_deliver(event, scene) is True
+
+    def test_repeated_action_throttled(self):
+        """Same action KEY_DOWN events are throttled within delay window."""
+        scene = ThrottledScene()
+        engine = GameEngine()
+
+        event = InputEvent(type=InputType.KEY_DOWN, key=42, action="move_up")
+        assert engine._should_deliver(event, scene) is True
+        assert engine._should_deliver(event, scene) is False
+
+    def test_different_actions_independent(self):
+        """Different actions are tracked independently."""
+        scene = ThrottledScene()
+        engine = GameEngine()
+
+        up = InputEvent(type=InputType.KEY_DOWN, key=42, action="move_up")
+        down = InputEvent(type=InputType.KEY_DOWN, key=43, action="move_down")
+
+        assert engine._should_deliver(up, scene) is True
+        assert engine._should_deliver(down, scene) is True
+        # up is still throttled
+        assert engine._should_deliver(up, scene) is False
+
+    def test_non_key_down_events_pass_through(self):
+        """Non-KEY_DOWN events are never throttled."""
+        scene = ThrottledScene()
+        engine = GameEngine()
+
+        key_up = InputEvent(type=InputType.KEY_UP, key=42, action="move_up")
+        mouse = InputEvent(type=InputType.MOUSE_DOWN, button=1, action="click")
+        motion = InputEvent(type=InputType.MOUSE_MOTION, pos=(10, 20))
+
+        for event in [key_up, mouse, motion]:
+            assert engine._should_deliver(event, scene) is True
+            assert engine._should_deliver(event, scene) is True
+
+    def test_key_down_without_action_passes_through(self):
+        """KEY_DOWN events without a resolved action are not throttled."""
+        scene = ThrottledScene()
+        engine = GameEngine()
+
+        event = InputEvent(type=InputType.KEY_DOWN, key=42, action=None)
+        assert engine._should_deliver(event, scene) is True
+        assert engine._should_deliver(event, scene) is True
+
+    def test_throttle_expires_after_delay(self):
+        """Event is delivered again after the delay window passes."""
+        scene = ThrottledScene()
+        engine = GameEngine()
+
+        event = InputEvent(type=InputType.KEY_DOWN, key=42, action="move_up")
+        assert engine._should_deliver(event, scene) is True
+        assert engine._should_deliver(event, scene) is False
+
+        # Simulate time passing beyond the delay
+        engine._action_timestamps["move_up"] = time.monotonic() - 0.2
+        assert engine._should_deliver(event, scene) is True
+
+    def test_throttle_resets_on_scene_change(self):
+        """Switching scenes resets action timestamps."""
+        engine = GameEngine()
+        engine._action_timestamps["move_up"] = time.monotonic()
+        engine._active_scene_id = id(object())  # some old scene id
+
+        scene = ThrottledScene()
+        # Simulate what the loop does: detect scene change
+        new_id = id(scene)
+        assert new_id != engine._active_scene_id
+        engine._active_scene_id = new_id
+        engine._action_timestamps.clear()
+
+        event = InputEvent(type=InputType.KEY_DOWN, key=42, action="move_up")
+        assert engine._should_deliver(event, scene) is True

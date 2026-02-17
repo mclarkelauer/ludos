@@ -227,6 +227,17 @@ class GameplayScene(BaseScene):
         print("Left gameplay!")
 ```
 
+#### Input Repeat Delay
+
+Set `input_repeat_delay` (seconds) on a scene class to throttle repeated `KEY_DOWN` events with a resolved action. This prevents held keys from firing too fast (e.g. menu navigation). Only `KEY_DOWN` events with a resolved action are throttled — mouse events, key-up events, and events without an action always pass through.
+
+```python
+class SlowMenuScene(BaseScene):
+    input_repeat_delay = 0.2  # 200ms between repeated actions
+```
+
+Default is `0.0` (no throttling). Timestamps reset when the active scene changes.
+
 ### SceneManager
 
 Scenes live on a stack. The topmost scene is the **active** scene that receives input, updates, and renders.
@@ -284,7 +295,7 @@ menu = MenuScene(
 )
 ```
 
-Navigation uses the `"move_up"`, `"move_down"`, and `"confirm"` actions from your key bindings. Selection wraps around.
+Navigation uses the `"move_up"`, `"move_down"`, and `"confirm"` actions from your key bindings. Selection wraps around. `MenuScene` sets `input_repeat_delay = 0.15` by default so held arrow keys don't cycle too fast.
 
 **MenuConfig fields**:
 
